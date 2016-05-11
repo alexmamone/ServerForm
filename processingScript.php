@@ -1,18 +1,38 @@
-​<?php
-if(isset($_POST['title'])) {
-    $data = "\n" . $_POST["dateReq"] . "_" . $_POST["requestor"] . "_" . $_POST["mediaType"] . "_" . $_POST["title"] . "_" . $_POST["season"] . "_" . $_POST["year"] . "_" . $_POST["genre"]
-    . "_" . $_POST["comments"];
-    $ret = file_put_contents('output.txt', $data, FILE_APPEND | LOCK_EX);
-    if($ret === false) {
-        die('There was an error writing this file');
-    }
-    else {
-        echo "$ret bytes written to file";
-    }
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "test";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-else {
-   die('no post data to process');
+
+$sql = "INSERT INTO test.requesttable (requestnum, requestdate, requestor, mediatype, title, tvseason, tvepisode, year, genre, comments, status)
+VALUES (4,
+'2015-12-10 10:34:09',
+'Scott',
+'Movie',
+'Jaws',
+'',
+'',
+{$_POST['year']},
+'',
+'Comments',
+0)";
+
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
 }
-header('Location: home.html');
-exit;
+
+$conn->close();
+//header('Location: home.html');
+//exit;
+//{$_POST['comments']}
 ?>
