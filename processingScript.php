@@ -1,6 +1,7 @@
-<?php
+​<?php
 if(isset($_POST['title'])) {
-    $data = $_POST["requestor"] . "_" . $_POST["mediaType"] . "_" . $_POST["title"] . "_" . $_POST["season"] . "_" . $_POST["year"] . "_" . $_POST["genre"] . "_" . $_POST["comments"] . "\n";
+    $data = "\n" . $_POST["dateReq"] . "_" . $_POST["requestor"] . "_" . $_POST["mediaType"] . "_" . $_POST["title"] . "_" . $_POST["season"] . "_" . $_POST["year"] . "_" . $_POST["genre"]
+    . "_" . $_POST["comments"];
     $ret = file_put_contents('output.txt', $data, FILE_APPEND | LOCK_EX);
     if($ret === false) {
         die('There was an error writing this file');
@@ -12,4 +13,6 @@ if(isset($_POST['title'])) {
 else {
    die('no post data to process');
 }
+header('Location: home.html');
+exit;
 ?>

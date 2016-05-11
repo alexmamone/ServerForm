@@ -1,10 +1,11 @@
+<!--Server Form v.1.1 5-9-2016-->
 <!DOCTYPE html>
 <html>
     <head>
         <title>
             Server Request Form
         </title>
-        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.0.min.js">
+        <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.0.min.js">
         </script>
         <script>
             $(document).ready(function(){
@@ -16,7 +17,7 @@
 						type = "series";
 					}
 
-                    var url = "http://www.omdbapi.com/?t="+title+"&y="+year+"&type="+type+"&plot=short&r=json";
+                    var url = "https://www.omdbapi.com/?t="+title+"&y="+year+"&type="+type+"&plot=short&r=json";
 					$.ajax({url: url, success: function(result){
 					if(result.Title == null){
 						alert("Update yo bitch-ass search terms.");
@@ -35,14 +36,13 @@
 
             });
 
-            function hideMedia(){
-                $('#infoTable').hide();
+        function hideMedia(){
+        $('#infoTable').hide();
 				$('#plotDiv').hide();
 				$('#poster').hide();
             }
 
-            function checkForType(){
-
+        function checkForType(){
 				switch($('#mediaType').val()){
 					case "TV Show":
 						selectTV();
@@ -96,7 +96,7 @@
             function selectTV(){
 				$('#infoTable').show();
 				$('#plotDiv').show();
-                $('#authorRow').hide();
+        $('#authorRow').hide();
 				$('#seasonRow').show();
 				$('#artistRow').hide();
 				$('#scoreRow').show();
@@ -110,7 +110,7 @@
 			function selectAudio(){
 				$('#infoTable').show();
 				$('#plotDiv').show();
-                $('#authorRow').hide();
+        $('#authorRow').hide();
 				$('#seasonRow').hide();
 				$('#artistRow').show();
 				$('#scoreRow').hide();
@@ -135,6 +135,25 @@
 				$('#poster').attr('src', '');
 			}
 
+			function populateDate(){
+				var d = new Date();
+				var month = d.getMonth()+1;
+				var day = d.getDate();
+        var hours = d.getHours();
+        var min = d.getMinutes();
+        var sec = d.getSeconds();
+        var mili = d.getMilliseconds();
+				var output = (month<10 ? '0' : '') + month + '/' + (day<10 ? '0' : '') + day + '/' + d.getFullYear() + " " + hours + ":" + min + ":" + sec + "." + mili;
+				$('#dateReq').val(output);
+			}
+
+			function doOnLoad(){
+				hideMedia();
+				clearKeys()
+				checkForType();
+				populateDate();
+
+			}
 
 
         </script>
@@ -148,7 +167,7 @@
 		}
 		</style>
     </head>
-    <body onLoad="hideMedia()">
+    <body onLoad="doOnLoad()">
     <form action="processingScript.php" method="POST">
         <fieldset>
             <legend>User Details</legend>
@@ -274,8 +293,9 @@
                     <textarea id="plot" rows="5" cols="100" readonly></textarea>
 				</div>
         </fieldset>
+		<input type="text" id="dateReq" name="dateReq" hidden />
 		<br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit"/>
     </form>
     </body>
 </html>
