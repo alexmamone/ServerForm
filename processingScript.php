@@ -1,8 +1,9 @@
+<!--Proc Script v.1.3 5-18-2016-->
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "password";
-$dbname = "test";
+$username = "cbentle";
+$password = "guest";
+$dbname = "serverForm";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -10,21 +11,26 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-//TODO test this string with echo
-$maxnum = $conn->query("SELECT maxnumkey from maxnumtable WHERE maxnum")
 
-$sql = "INSERT INTO test.requesttable (requestnum, requestdate, requestor, mediatype, title, tvseason, tvepisode, year, genre, comments, status)
-VALUES (4,
-\"{$_POST['requestdate']}\",
+
+$sql = "INSERT INTO requesttable (requestnum, requestdate, requestor, mediatype, title, artist, author, tvseason, tvepisode, year, genre, comments, status)
+SELECT numkeyval,
+\"{$_POST['dateReq']}\",
 \"{$_POST['requestor']}\",
-\"{$_POST['mediatype']}\",
+\"{$_POST['mediaType']}\",
 \"{$_POST['title']}\",
+\"{$_POST['artist']}\",
+\"{$_POST['author']}\",
 \"{$_POST['season']}\",
-\"{$_POST['tvepisode']}\",
+\"{$_POST['episode']}\",
 \"{$_POST['year']}\",
 \"{$_POST['genre']}\",
 \"{$_POST['comments']}\",
-0)";
+0
+from
+numkey
+where
+numkeynum = 1";
 
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
@@ -32,9 +38,15 @@ if ($conn->query($sql) === TRUE) {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
+$update = "update numkey set numkeyval = numkeyval + 1";
+
+if ($conn->query($update) === TRUE) {
+    echo "Update Successful";
+} else {
+    echo "Error: " . $update . "<br>" . $conn->error;
+}
+
 $conn->close();
-//header('Location: home.html');
-//exit;
-//{$_POST['comments']}
-//'2015-12-10 10:34:09'
+header('Location: home.php');
+exit;
 ?>
