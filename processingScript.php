@@ -1,9 +1,9 @@
 <!--Proc Script v.1.3 5-18-2016-->
 <?php
 $servername = "localhost";
-$username = "cbentle";
-$password = "guest";
-$dbname = "serverForm";
+$username = "root";
+$password = "password";
+$dbname = "test";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 
-$sql = "INSERT INTO requesttable (requestnum, requestdate, requestor, mediatype, title, artist, author, tvseason, tvepisode, year, genre, comments, status)
+$sql = "INSERT INTO test.requesttable (requestnum, requestdate, requestor, mediatype, title, artist, author, tvseason, tvepisode, year, genre, comments, status)
 SELECT numkeyval,
 \"{$_POST['dateReq']}\",
 \"{$_POST['requestor']}\",
@@ -28,7 +28,7 @@ SELECT numkeyval,
 \"{$_POST['comments']}\",
 0
 from
-numkey
+test.numkey
 where
 numkeynum = 1";
 
@@ -38,7 +38,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
-$update = "update numkey set numkeyval = numkeyval + 1";
+$update = "update test.numkey set numkeyval = numkeyval + 1";
 
 if ($conn->query($update) === TRUE) {
     echo "Update Successful";
@@ -47,6 +47,17 @@ if ($conn->query($update) === TRUE) {
 }
 
 $conn->close();
+
+// the message
+$msg = "This is a test";
+
+// use wordwrap() if lines are longer than 70 characters
+$msg = wordwrap($msg,70);
+
+// send email
+mail("serverform@gamer3.us.to","Test Subject",$msg);
+
+
 header('Location: home.php');
 exit;
 ?>
